@@ -19,13 +19,10 @@ public class Tile : MonoBehaviour {
 
 	public virtual void OnStepIn ()
 	{
-		print ("steped into the tile " + gameObject.name);
-
 	}
 
 	public virtual void OnStepOut ()
 	{
-		print ("steped out of the tile " + gameObject.name);
 	}
 
 	public override string ToString ()
