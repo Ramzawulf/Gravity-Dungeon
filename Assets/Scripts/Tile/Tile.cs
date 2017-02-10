@@ -6,16 +6,9 @@ public class Tile : MonoBehaviour {
 
 	public Transform centre;
 	public TileType type;
-	protected Platform platform;
 
 	void Start () {
-		/*var parent = transform.parent;
-		platform = parent.GetComponent<Platform> ();
-		if (platform == null)
-			Destroy (gameObject);*/
-		
 	}
-
 
 	public virtual void OnStepIn ()
 	{
