@@ -6,7 +6,7 @@ public class Tile : MonoBehaviour {
 
 	public Transform centre;
 	public TileType type;
-	private Platform platform;
+	protected Platform platform;
 
 	void Start () {
 		/*var parent = transform.parent;

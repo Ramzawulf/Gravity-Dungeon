@@ -5,17 +5,23 @@ using UnityEngine.Events;
 
 public class TileSwitch : Tile {
 
-	public UnityEvent switchEvent;
+	public GameObject[] targets;
 
 	public override void OnStepIn ()
 	{
-		if (switchEvent != null)
-			switchEvent.Invoke ();
+		foreach (var target in targets) {
+			ISwitchTriggered s = target.GetComponent<ISwitchTriggered> ();
+			if(s != null)
+				s.OnSwitchOn ();
+		}
 	}
 
 	public override void OnStepOut ()
 	{
-		if (switchEvent != null)
-			switchEvent.Invoke ();
+		foreach (var target in targets) {
+			ISwitchTriggered s = target.GetComponent<ISwitchTriggered> ();
+			if(s != null)
+				s.OnSwitchOff ();
+		}
 	}
 }
