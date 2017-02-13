@@ -7,11 +7,16 @@ using UnityEngine;
 public class PlayerCamera : MonoBehaviour {
 
 	public static PlayerCamera instance;
+	public Transform targetPosition;
 	public PlayerBehaviour player;
 	public float fadeLevel = 0.1f;
 	public float rangeOffset = 0.1f;
+
+	public float originOffset= 0.5f;
+
+	public float movementSpeed = 0.2f;
+	public float radius = 2f;
 	private GameObject[] hidden;
-	[SerializeField]
 	private Camera camera;
 
 
@@ -27,10 +32,12 @@ public class PlayerCamera : MonoBehaviour {
 	}
 
 	void Update () {
-
+		LookAtPlayer ();
+		GetClose ();
+		ClearView ();
 	}
 
-	public void ClearView ()
+	private void ClearView ()
 	{
 		DisplayHiddenElements ();
 		HideElements ();
@@ -70,11 +77,21 @@ public class PlayerCamera : MonoBehaviour {
 	GameObject[] GetElementsInBetween ()
 	{
 		float distance = Vector3.Distance (transform.position, player.gameObject.transform.position) - rangeOffset;
-		Collider[] hits = Physics.OverlapSphere (transform.position, distance);
-		Ray ray = new Ray(transform.position, transform.position.DirectionTo(player.gameObject.transform.position));
+		//RaycastHit[] hits = Physics.SphereCastAll (transform.position, radius, transform.position.DirectionTo (player.gameObject.transform.position));
+
+		Collider[] hits = Physics.OverlapSphere (transform.position+ Vector3.up * originOffset, distance);
+		//Ray ray = new Ray(transform.position + Vector3.up * originOffset, transform.position.DirectionTo(player.gameObject.transform.position));
 
 			
 		List<GameObject> result = new List<GameObject>();
+
+		/*
+		foreach (RaycastHit h in hits) {
+			if (!h.collider.CompareTag ("Player")) {
+				result.Add (h.collider.GetComponent<Collider>().gameObject);
+			}
+		}
+		*/
 
 		foreach (Collider h in hits) {
 			if (!h.CompareTag ("Player")) {
@@ -86,7 +103,17 @@ public class PlayerCamera : MonoBehaviour {
 
 	public void OnDrawGizmos(){
 		Gizmos.color = Color.cyan;
-		Gizmos.DrawWireSphere (transform.position, Vector3.Distance (transform.position, player.gameObject.transform.position));
+		//Gizmos.DrawWireSphere (transform.position, Vector3.Distance (transform.position, player.gameObject.transform.position));
 
+	}
+
+	void GetClose ()
+	{
+		transform.position = Vector3.MoveTowards (transform.position, targetPosition.position, movementSpeed);
+	}
+
+	void LookAtPlayer ()
+	{
+		transform.LookAt (player.gameObject.transform);
 	}
 }
