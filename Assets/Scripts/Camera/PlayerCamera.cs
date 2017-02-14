@@ -9,10 +9,16 @@ public class PlayerCamera : MonoBehaviour {
 	public static PlayerCamera instance;
 	public Transform targetPosition;
 	public PlayerBehaviour player;
-	public float fadeLevel = 0.1f;
+
+	public float maximumAlpha = 0.3f;
+
+	public float minimumAlpha = 0.6f;
+
 	public float rangeOffset = 0.1f;
 
 	public float originOffset= 0.5f;
+
+	public float threshold = 1.2f;
 
 	public float movementSpeed = 0.2f;
 	public float radius = 2f;
@@ -67,8 +73,9 @@ public class PlayerCamera : MonoBehaviour {
 
 		foreach (var e in hidden) {
 			r = e.GetComponent<Renderer> ();
-			if (r != null) {
-				col = new Color(r.material.color.r,r.material.color.g,r.material.color.b, fadeLevel);
+			if (r != null && !player.LineOfSight.bounds.Contains (e.transform.position)) {
+				float a = AlphaLevel (Vector3.Distance(player.transform.position, e.transform.position));
+				col = new Color(r.material.color.r,r.material.color.g,r.material.color.b, a);
 				r.material.color =  col;
 			}
 		}
@@ -76,7 +83,7 @@ public class PlayerCamera : MonoBehaviour {
 
 	GameObject[] GetElementsInBetween ()
 	{
-		float distance = Vector3.Distance (transform.position, player.gameObject.transform.position) - rangeOffset;
+		float distance = Vector3.Distance (transform.position, player.transform.position) - rangeOffset;
 		//RaycastHit[] hits = Physics.SphereCastAll (transform.position, radius, transform.position.DirectionTo (player.gameObject.transform.position));
 
 		Collider[] hits = Physics.OverlapSphere (transform.position+ Vector3.up * originOffset, distance);
@@ -114,6 +121,18 @@ public class PlayerCamera : MonoBehaviour {
 
 	void LookAtPlayer ()
 	{
-		transform.LookAt (player.gameObject.transform);
+		
+			transform.LookAt (player.gameObject.transform);
+
+	}
+
+	float AlphaLevel (float f)
+	{
+		float maxRange = Vector3.Distance (transform.position, player.transform.position);
+
+		float mapMin = 1;
+		float mapMax = 0;
+	
+		return minimumAlpha - minimumAlpha*(f/maxRange)+maximumAlpha;
 	}
 }
