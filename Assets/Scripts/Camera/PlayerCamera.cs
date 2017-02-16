@@ -23,8 +23,6 @@ public class PlayerCamera : MonoBehaviour {
 	public float movementSpeed = 0.2f;
 	public float radius = 2f;
 	private GameObject[] hidden;
-	private Camera camera;
-
 
 
 	// Use this for initialization
@@ -33,8 +31,6 @@ public class PlayerCamera : MonoBehaviour {
 			instance = this;
 		else if (instance != this)
 			Destroy (gameObject);
-
-		camera = GetComponent<Camera> ();
 	}
 
 	void Update () {
@@ -129,10 +125,6 @@ public class PlayerCamera : MonoBehaviour {
 	float AlphaLevel (float f)
 	{
 		float maxRange = Vector3.Distance (transform.position, player.transform.position);
-
-		float mapMin = 1;
-		float mapMax = 0;
-	
 		return minimumAlpha - minimumAlpha*(f/maxRange)+maximumAlpha;
 	}
 }

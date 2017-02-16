@@ -57,7 +57,7 @@ public class Platform : MonoBehaviour {
 				gameObject.transform.up = Vector3.right;
 				break;
 			case Directions.Forward:
-				gameObject.transform.up = Vector3.fwd;
+				gameObject.transform.up = Vector3.forward;
 				break;
 			case Directions.Back:
 				gameObject.transform.up = Vector3.back;

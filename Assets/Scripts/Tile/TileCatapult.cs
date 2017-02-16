@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TileCatapult : Tile {
 
-	public override void OnStepIn ()
+	public override void OnStepIn (GameObject go)
 	{
 		//ToDo
 	}

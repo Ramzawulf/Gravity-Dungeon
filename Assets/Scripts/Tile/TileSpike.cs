@@ -5,16 +5,16 @@ using UnityEngine;
 public class TileSpike : Tile {
 	public GameObject spikeGameObject;
 	public float springSize;
-	private Spikes spikes;
+	[SerializeField]
+	public Spikes spikes;
 
 	public void Awake(){
-		spikes = spikeGameObject.GetComponent<Spikes> ();
 		type = TileType.Spike;
 	}
 
-	public override void OnStepIn ()
+	public override void OnStepIn (GameObject go)
 	{
-		spikes.Spring ();
+		//spikes.Spring ();
 	}
 
 }

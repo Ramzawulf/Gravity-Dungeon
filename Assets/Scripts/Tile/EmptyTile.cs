@@ -11,15 +11,20 @@ public class EmptyTile : Tile {
 			col = gameObject.GetComponent<Collider> ();
 	}
 
-	public override void OnStepIn ()
+	public override void OnStepIn (GameObject go)
 	{
-		StartCoroutine (DropPlayer ());
+		onTile = go;
+		StartCoroutine (Drop ());
 	}
 
-	private IEnumerator DropPlayer(){
+	private IEnumerator Drop(){
 		col.enabled = false;
-		if (PlayerBehaviour.instance != null)
-			StartCoroutine(PlayerBehaviour.instance.Fall ());
+		if (onTile.GetComponent<PlayerBehaviour> () != null)
+			StartCoroutine (onTile.GetComponent<PlayerBehaviour> ().Fall ());
+		else {
+			//Drop other elements
+		}
+
 		yield return new WaitForSeconds(2.5f);
 		col.enabled = true;
 	}

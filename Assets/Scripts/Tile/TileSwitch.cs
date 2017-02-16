@@ -7,7 +7,7 @@ public class TileSwitch : Tile {
 
 	public GameObject[] targets;
 
-	public override void OnStepIn ()
+	public override void OnStepIn (GameObject go)
 	{
 		foreach (var target in targets) {
 			ISwitchTriggered s = target.GetComponent<ISwitchTriggered> ();

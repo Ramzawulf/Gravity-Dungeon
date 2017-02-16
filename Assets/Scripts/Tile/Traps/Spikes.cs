@@ -5,7 +5,7 @@ using UnityEngine;
 public class Spikes : MonoBehaviour, ISpringTrap {
 	public float springLength = 0.5f;
 	public float springSpeed = 0.5f;
-	public GameObject spikes;
+	public Transform spikeGameObject;
 	public Transform sprungPosition;
 
 	public void Awake(){
@@ -13,46 +13,40 @@ public class Spikes : MonoBehaviour, ISpringTrap {
 	}
 
 	#region ISpringTrap implementation
-	public void Spring ()
+	public void Spring (float timer = null)
 	{
-		StartCoroutine (Activate ());
+		StartCoroutine (Activate (timer));
 	}
 	#endregion
 
-	private IEnumerator Activate(){
-		print ("sprung!!!");
-		/*
-		spikes.transform.position = sprungPosition.position;
+	private IEnumerator Activate(float timer){
+		//play sound
+		yield return new WaitForSeconds (timer);
 
-		yield return new WaitForSeconds (0.8f);
-		spikes.transform.position = transform.position;
-		*/
-
-
-		while (true) {
-			spikes.transform.position = Vector3.MoveTowards (spikes.transform.position, sprungPosition.position, springSpeed);
-			if (spikes.transform.position == sprungPosition.position)
-				break;
+		while (Vector3.Distance(spikeGameObject.transform.position ,sprungPosition.position) > float.Epsilon) {
+			spikeGameObject.position = Vector3.MoveTowards (spikeGameObject.position, sprungPosition.position, springSpeed * Time.deltaTime);
 			yield return null;
 		}
-		while (true) {
-			spikes.transform.position = Vector3.MoveTowards (spikes.transform.position, transform.position, springSpeed);
+
+		yield return new WaitForSeconds (0.75f);
+
+		while (Vector3.Distance(spikeGameObject.transform.position, transform.position) > float.Epsilon) {
+			spikeGameObject.position = Vector3.MoveTowards (spikeGameObject.position, transform.position, springSpeed * Time.deltaTime * 0.5f);
 			yield return null;
-			if (spikes.transform.position == transform.position)
-				break;
 		}
+
 	}
 
 	public void OnDrawGizmos(){
 		Gizmos.color = Color.red;
 		Gizmos.DrawLine (transform.position, sprungPosition.position);
 		//Gizmos.DrawWireSphere (sprungPosition.position, 0.01f);
-		Gizmos.DrawWireCube (sprungPosition.position, spikes.transform.lossyScale);
+		Gizmos.DrawWireCube (sprungPosition.position, spikeGameObject.transform.lossyScale);
 	}
 
 	public void Update(){
 		if (Input.GetKeyDown (KeyCode.T)) {
-			Spring ();
+			Spring (1.5);
 		}
 			
 	}

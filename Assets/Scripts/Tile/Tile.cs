@@ -6,11 +6,12 @@ public class Tile : MonoBehaviour {
 
 	public Transform centre;
 	public TileType type;
+	protected GameObject onTile;
 
 	void Start () {
 	}
 
-	public virtual void OnStepIn ()
+	public virtual void OnStepIn (GameObject go)
 	{
 	}
 
