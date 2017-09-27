@@ -14,7 +14,7 @@ public class SceneItems : Editor {
 	protected static string scenePath = "/_RBS6Nations/Scenes/";
 
 	static SceneItems(){
-		EditorApplication.update += GenerateMenuItems;
+		//EditorApplication.update += GenerateMenuItems;
 	}
 
 	private static string[] GetSceneNames(){

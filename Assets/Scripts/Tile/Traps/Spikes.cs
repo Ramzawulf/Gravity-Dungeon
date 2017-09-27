@@ -13,7 +13,7 @@ public class Spikes : MonoBehaviour, ISpringTrap {
 	}
 
 	#region ISpringTrap implementation
-	public void Spring (float timer = null)
+	public void Spring (float timer = 0)
 	{
 		StartCoroutine (Activate (timer));
 	}
@@ -46,7 +46,7 @@ public class Spikes : MonoBehaviour, ISpringTrap {
 
 	public void Update(){
 		if (Input.GetKeyDown (KeyCode.T)) {
-			Spring (1.5);
+			Spring (1.5f);
 		}
 			
 	}
