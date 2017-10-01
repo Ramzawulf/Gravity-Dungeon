@@ -5,7 +5,7 @@ namespace Assets.Scripts.UI
     public class LookAtCamera : MonoBehaviour
     {
 
-        public Camera Cam;
+        public UnityEngine.Camera Cam;
 
         private void Update()
         {

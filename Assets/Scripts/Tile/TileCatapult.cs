@@ -1,11 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class TileCatapult : Tile {
+namespace Assets.Scripts.Tile
+{
+    public class TileCatapult : global::Assets.Scripts.Tile.Tile {
 
-	public override void OnStepIn (GameObject go)
-	{
-		//ToDo
-	}
+        public override void OnStepIn (GameObject go)
+        {
+            //ToDo
+        }
+    }
 }

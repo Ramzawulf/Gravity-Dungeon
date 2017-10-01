@@ -1,27 +1,28 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Assets.Scripts.Interfaces;
 using UnityEngine;
-using UnityEngine.Events;
 
-public class TileSwitch : Tile {
+namespace Assets.Scripts.Tile
+{
+    public class TileSwitch : Tile {
 
-	public GameObject[] targets;
+        public GameObject[] targets;
 
-	public override void OnStepIn (GameObject go)
-	{
-		foreach (var target in targets) {
-			ISwitchTriggered s = target.GetComponent<ISwitchTriggered> ();
-			if(s != null)
-				s.OnSwitchOn ();
-		}
-	}
+        public override void OnStepIn (GameObject go)
+        {
+            foreach (var target in targets) {
+                ISwitchTriggered s = target.GetComponent<ISwitchTriggered> ();
+                if(s != null)
+                    s.OnSwitchOn ();
+            }
+        }
 
-	public override void OnStepOut ()
-	{
-		foreach (var target in targets) {
-			ISwitchTriggered s = target.GetComponent<ISwitchTriggered> ();
-			if(s != null)
-				s.OnSwitchOff ();
-		}
-	}
+        public override void OnStepOut ()
+        {
+            foreach (var target in targets) {
+                ISwitchTriggered s = target.GetComponent<ISwitchTriggered> ();
+                if(s != null)
+                    s.OnSwitchOff ();
+            }
+        }
+    }
 }

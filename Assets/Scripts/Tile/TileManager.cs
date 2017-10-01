@@ -1,20 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class TileManager : MonoBehaviour {
+namespace Assets.Scripts.Tile
+{
+    public class TileManager : MonoBehaviour {
 
-	public static TileManager instance;
+        public static TileManager instance;
 
-	void Awake () {
-		if (instance == null)
-			instance = this;
-		else if (instance != this)
-			Destroy (gameObject);
-	}
+        void Awake () {
+            if (instance == null)
+                instance = this;
+            else if (instance != this)
+                Destroy (gameObject);
+        }
 	
-	// Update is called once per frame
-	void Update () {
+        // Update is called once per frame
+        void Update () {
 		
-	}
+        }
+    }
 }

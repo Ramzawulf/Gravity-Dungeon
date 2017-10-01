@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace V1{
+namespace Assets.Scripts.V1{
 public class Platform : MonoBehaviour {
 
     public GameObject tilePrefab;

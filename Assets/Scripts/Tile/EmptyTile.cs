@@ -1,31 +1,34 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
+using Assets.Scripts.V1;
 using UnityEngine;
 
-public class EmptyTile : Tile {
+namespace Assets.Scripts.Tile
+{
+    public class EmptyTile : Tile {
 
-	private Collider col;
+        private Collider col;
 
-	public void Awake(){
-		if (col == null)
-			col = gameObject.GetComponent<Collider> ();
-	}
+        public void Awake(){
+            if (col == null)
+                col = gameObject.GetComponent<Collider> ();
+        }
 
-	public override void OnStepIn (GameObject go)
-	{
-		onTile = go;
-		StartCoroutine (Drop ());
-	}
+        public override void OnStepIn (GameObject go)
+        {
+            onTile = go;
+            StartCoroutine (Drop ());
+        }
 
-	private IEnumerator Drop(){
-		col.enabled = false;
-		if (onTile.GetComponent<PlayerBehaviour> () != null)
-			StartCoroutine (onTile.GetComponent<PlayerBehaviour> ().Fall ());
-		else {
-			//Drop other elements
-		}
+        private IEnumerator Drop(){
+            col.enabled = false;
+            if (onTile.GetComponent<PlayerBehaviour> () != null)
+                StartCoroutine (onTile.GetComponent<PlayerBehaviour> ().Fall ());
+            else {
+                //Drop other elements
+            }
 
-		yield return new WaitForSeconds(2.5f);
-		col.enabled = true;
-	}
+            yield return new WaitForSeconds(2.5f);
+            col.enabled = true;
+        }
+    }
 }

@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public interface ISpringTrap {
-	void Spring (float f);
+﻿namespace Assets.Scripts.Tile.Traps
+{
+    public interface ISpringTrap {
+        void Spring (float f);
+    }
 }

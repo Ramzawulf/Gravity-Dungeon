@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Version1{
+namespace Assets.Scripts.V1{
 public class PlayerMovement : MonoBehaviour {
 
 	public Vector3 targetPosition;
