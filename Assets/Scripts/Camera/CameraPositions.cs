@@ -1,19 +1,17 @@
 ﻿using UnityEngine;
 
-namespace Assets.Scripts.V3
+namespace Assets.Scripts.Camera
 {
     public class CameraPositions : MonoBehaviour
     {
 
-        private UnityEngine.Camera camera;
         public Transform FarBack;
 
 
         void Start()
         {
-            camera = UnityEngine.Camera.main;
-            camera.transform.SetParent(FarBack);
-            camera.transform.position = Vector3.zero;
+            UnityEngine.Camera.main.transform.SetParent(FarBack);
+            UnityEngine.Camera.main.transform.localPosition = Vector3.zero;
         }
 
         // Update is called once per frame

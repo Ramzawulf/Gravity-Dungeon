@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace Assets.Scripts.V3
+namespace Assets.Scripts.Player
 {
     [RequireComponent(typeof(ConstantForce))]
     [RequireComponent(typeof(Rigidbody))]
