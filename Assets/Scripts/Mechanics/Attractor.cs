@@ -6,6 +6,12 @@ namespace Assets.Scripts.Mechanics
 {
     public class Attractor : MonoBehaviour
     {
+        public enum AttractorForce
+        {
+            low,
+            medium,
+            high
+        }
 
         public static List<Attractor> AttractorList;
         public float AttractionForce = 10f;
@@ -23,20 +29,28 @@ namespace Assets.Scripts.Mechanics
             AttractorList.Remove(this);
         }
 
-        void Start()
-        {
-         
-        }
-
-     
-        void Update()
-        {
-
-        }
-
         public bool InRange(Anchor anchor)
         {
             return Vector3.Distance(transform.position, anchor.transform.position) <= Range;
+        }
+
+        private void OnCollisionEnter2D(Collision2D col)
+        {
+            if (col.gameObject.CompareTag("Anchor"))
+                Destroy(gameObject);
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireSphere(transform.position, Range);
+        }
+
+        public float ForceByDistance(Anchor anchor)
+        {
+            float dist = Mathf.Lerp(0, Range, Vector3.Distance(transform.position, anchor.transform.position));
+            
+            return  dist * AttractionForce;
         }
     }
 }
