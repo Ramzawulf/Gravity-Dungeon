@@ -1,17 +1,98 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts.Block;
+using DG.Tweening;
 using UnityEngine;
 
 namespace Assets.Scripts.Mechanics
 {
-    //[RequireComponent(typeof(ConstantForce))]
-    //[RequireComponent(typeof(Rigidbody2D))]
     public class Anchor : MonoBehaviour
     {
 
         public static List<Anchor> AnchorList;
-        public float GravityCheck = 0.25f;
-        private Rigidbody2D rb;
+        public float HearthBeat = 0.25f;
+        public Transform Direction;
+        public Vector3 GravityPull;
+        public Plane myPlane;
+
+
+        void Awake()
+        {
+            myPlane = new Plane(transform.up, transform.position);
+        }
+
+        public IEnumerator Move(Vector3 target)
+        {
+            transform.LookAt(target);
+            while (true)
+            {
+                var t = Vector3.MoveTowards(transform.position, target, Time.deltaTime);
+                transform.position = t;
+                yield return null;
+                if (target == transform.position)
+                {
+                    Transform n = GetNearestNode(GetDirection());
+                    target = n.position;
+                }
+                yield return null;
+            }
+
+        }
+
+        void Start()
+        {
+            StartCoroutine(Move(transform.position));
+        }
+
+        void Update()
+        {
+
+        }
+
+
+        private Transform GetNearestNode(Vector3 pos)
+        {
+            float minDistance = float.MaxValue;
+            Transform node = null;
+            foreach (BlockBase block in BlockBase.BlockList)
+            {
+                foreach (Transform movementNode in block.MovementNodes)
+                {
+                    if (Vector3.Distance(pos, movementNode.position) < minDistance && Vector3.Distance(movementNode.position, transform.position) > 0.5f)
+                    {
+                        node = movementNode;
+                        minDistance = Vector3.Distance(pos, movementNode.position);
+                    }
+                }
+            }
+
+            return node;
+        }
+
+        private Vector3 GetDirection()
+        {
+            Vector3 result = transform.position;
+
+            foreach (Attractor attractor in Attractor.AttractorList)
+            {
+                result += (attractor.transform.position - transform.position).normalized;
+            }
+
+            myPlane.SetNormalAndPosition(transform.up, transform.position + transform.up * 0.5f);
+
+            float distanceToIntersection;
+            Ray intersectionRay = new Ray(result, transform.up);
+            
+
+            if (myPlane.Raycast(intersectionRay, out distanceToIntersection))
+            {
+                Vector3 hit = intersectionRay.GetPoint(distanceToIntersection);
+                return hit;
+            }
+            return result.normalized;
+        }
+
+        #region To Be Updated
 
         void OnEnable()
         {
@@ -24,56 +105,29 @@ namespace Assets.Scripts.Mechanics
         {
             AnchorList.Remove(this);
         }
+        #endregion
 
-        void Awake()
-        {
-            rb = GetComponent<Rigidbody2D>();
-            rb.angularDrag = 0;
-            // rb.drag = 0.25f;
-        }
-
-        void Start()
-        {
-            StartCoroutine(GravityRefresh());
-        }
-
-        private void OnCollisionEnter2D(Collision2D col)
-        {
-            
-        }
-
-
-        private IEnumerator GravityRefresh()
-        {
-            while (true)
-            {
-                //Reset Gravity
-                Vector3 resultingForce = Vector3.zero;
-                foreach (Attractor attractor in Attractor.AttractorList)
-                {
-
-                    if (attractor.InRange(this))
-                    {
-                        Vector3 forceV = (attractor.transform.position - transform.position).normalized * attractor.ForceByDistance(this);
-                        print("Attractor pos: " + attractor.transform.position + "this pos: " + transform.position + "attr force = " + attractor.AttractionForce);
-                        print("force vector = " + forceV);
-                        resultingForce += forceV;
-                    }
-                    rb.velocity = resultingForce;
-                }
-                yield return new WaitForSeconds(GravityCheck);
-            }
-        }
-
+        #region Debug
         private void OnDrawGizmos()
         {
-            if (Attractor.AttractorList != null)
-                foreach (var att in Attractor.AttractorList)
-                {
-                    if (att.InRange(this))
-                        Gizmos.DrawLine(transform.position, att.transform.position);
-                }
+            DebugNearestNode();
         }
 
+        private void DebugNearestNode()
+        {
+            if (Attractor.AttractorList != null)
+            {
+                Vector3 d = GetDirection();
+                Transform n = GetNearestNode(d);
+
+                Gizmos.color = Color.blue;
+                Gizmos.DrawWireCube(d, new Vector3(0.1f, 0.1f, 0.1f));
+
+                Gizmos.color = Color.red;
+                if (n != null)
+                    Gizmos.DrawWireCube(n.position, new Vector3(0.2f, 0.2f, 0.2f));
+            }
+        }
+        #endregion
     }
 }

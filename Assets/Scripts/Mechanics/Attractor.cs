@@ -29,6 +29,9 @@ namespace Assets.Scripts.Mechanics
             AttractorList.Remove(this);
         }
 
+
+
+        #region To Adapt
         public bool InRange(Anchor anchor)
         {
             return Vector3.Distance(transform.position, anchor.transform.position) <= Range;
@@ -43,14 +46,19 @@ namespace Assets.Scripts.Mechanics
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.blue;
-            Gizmos.DrawWireSphere(transform.position, Range);
+            // Gizmos.DrawWireSphere(transform.position, Range);
         }
 
         public float ForceByDistance(Anchor anchor)
         {
             float dist = Mathf.Lerp(0, Range, Vector3.Distance(transform.position, anchor.transform.position));
-            
-            return  dist * AttractionForce;
+            return dist * AttractionForce;
+        }
+        #endregion
+
+        public Vector3 GravityPull(Anchor anchor)
+        {
+            return ((anchor.transform.position - transform.position) * AttractionForce);
         }
     }
 }
